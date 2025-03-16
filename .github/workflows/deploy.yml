@@ -9,22 +9,14 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Fetch all history for git push
+            fetch-depth: 0
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.7.0
+      - id: deploy
+        name: Deploy to dokku
+        uses: idoberko2/dokku-deploy-github-action@v1
         with:
-          ssh-private-key: ${{ secrets.DOKKU_KEY }}
-          
-      - name: Add Dokku host to known_hosts
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan -H ${{ secrets.DOKKU_HOST }} >> ~/.ssh/known_hosts
-
-      - name: Deploy to Dokku
-        run: |
-          git remote add dokku dokku@${{secrets.DOKKU_HOST}}:${{secrets.DOKKU_APP}}
-          git push dokku main:master -f
+            ssh-private-key: ${{ secrets.KEY }}
+            dokku-host: ${{secrets.DOKKU_HOST}}
+            app-name: ${{secrets.DOKKU_APP}}
