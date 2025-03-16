@@ -6,11 +6,12 @@ import { getCopilotToken } from "~/services/github/get-copilot-token"
 import { getDeviceCode } from "~/services/github/get-device-code"
 import { getGitHubUser } from "~/services/github/get-user"
 import { pollAccessToken } from "~/services/github/poll-access-token"
-
 import { HTTPError } from "./http-error"
 import { state } from "./state"
 
-const readGithubToken = () => fs.readFile(PATHS.GITHUB_TOKEN_PATH, "utf8")
+require('dotenv').config()
+
+const readGithubToken = () => process.env.GH_TOKEN ?? fs.readFile(PATHS.GITHUB_TOKEN_PATH, "utf8")
 
 const writeGithubToken = (token: string) =>
   fs.writeFile(PATHS.GITHUB_TOKEN_PATH, token)
