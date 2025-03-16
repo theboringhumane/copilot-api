@@ -6,6 +6,7 @@
       "dependencies": {
         "citty": "^0.1.6",
         "consola": "^3.4.2",
+        "dotenv": "^16.4.7",
         "fetch-event-stream": "^0.1.5",
         "gpt-tokenizer": "^2.9.0",
         "hono": "^4.7.9",
