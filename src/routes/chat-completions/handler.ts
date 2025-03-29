@@ -1,13 +1,11 @@
 import type { Context } from "hono"
 
-import consola from "consola"
 import { streamSSE, type SSEMessage } from "hono/streaming"
 
 import { awaitApproval } from "~/lib/approval"
 import { isNullish } from "~/lib/is-nullish"
 import { checkRateLimit } from "~/lib/rate-limit"
 import { state } from "~/lib/state"
-import { getTokenCount } from "~/lib/tokenizer"
 import {
   createChatCompletions,
   type ChatCompletionResponse,
@@ -18,8 +16,6 @@ export async function handleCompletion(c: Context) {
   await checkRateLimit(state)
 
   let payload = await c.req.json<ChatCompletionsPayload>()
-
-  consola.info("Current token count:", getTokenCount(payload.messages))
 
   if (state.manualApprove) await awaitApproval()
 
