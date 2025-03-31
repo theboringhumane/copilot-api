@@ -1,3 +1,5 @@
+import type { ChatCompletionsPayload } from "~/services/copilot/create-chat-completions"
+
 import type { State } from "./state"
 
 export const standardHeaders = () => ({
@@ -7,17 +9,36 @@ export const standardHeaders = () => ({
 
 export const copilotBaseUrl = (state: State) =>
   `https://api.${state.accountType}.githubcopilot.com`
-export const copilotHeaders = (state: State) => ({
-  Authorization: `Bearer ${state.copilotToken}`,
-  "content-type": standardHeaders()["content-type"],
-  "copilot-integration-id": "vscode-chat",
-  "editor-version": `vscode/${state.vsCodeVersion}`,
-  "editor-plugin-version": "copilot-chat/0.24.1",
-  "openai-intent": "conversation-panel",
-  "x-github-api-version": "2024-12-15",
-  "x-request-id": globalThis.crypto.randomUUID(),
-  "x-vscode-user-agent-library-version": "electron-fetch",
-})
+export const copilotHeaders = (
+  state: State,
+  payload?: ChatCompletionsPayload,
+) => {
+  const headers: Record<string, string> = {
+    Authorization: `Bearer ${state.copilotToken}`,
+    "content-type": standardHeaders()["content-type"],
+    "copilot-integration-id": "vscode-chat",
+    "editor-version": `vscode/${state.vsCodeVersion}`,
+    "editor-plugin-version": "copilot-chat/0.24.1",
+    "openai-intent": "conversation-panel",
+    "x-github-api-version": "2024-12-15",
+    "x-request-id": Math.random().toString(36).slice(2),
+    "x-vscode-user-agent-library-version": "electron-fetch",
+  }
+
+  // Add Copilot-Vision-Request header if any message contains image content
+  if (
+    payload?.messages.some(
+      (message) =>
+        Array.isArray(message.content)
+        && message.content.some((part) => part.type === "image_url"),
+    )
+  ) {
+    headers["Copilot-Vision-Request"] = "true"
+    headers["Copilot-Vision-Request-Id"] = Math.random().toString(36).slice(2)
+  }
+
+  return headers
+}
 
 export const GITHUB_API_BASE_URL = "https://api.github.com"
 export const githubHeaders = (state: State) => ({
