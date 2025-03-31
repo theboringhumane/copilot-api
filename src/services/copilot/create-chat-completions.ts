@@ -11,7 +11,7 @@ export const createChatCompletions = async (
 
   const response = await fetch(`${copilotBaseUrl(state)}/chat/completions`, {
     method: "POST",
-    headers: copilotHeaders(state),
+    headers: copilotHeaders(state, payload),
     body: JSON.stringify(payload),
   })
 
@@ -79,7 +79,15 @@ export interface ChatCompletionsPayload {
 
 export interface Message {
   role: "user" | "assistant" | "system"
-  content: string
+  content: string | Array<MessageContent>
+}
+
+export interface MessageContent {
+  type: "text" | "image_url"
+  text?: string
+  image_url?: {
+    url: string
+  }
 }
 
 // https://platform.openai.com/docs/api-reference
