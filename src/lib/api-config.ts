@@ -28,6 +28,8 @@ export const copilotHeaders = (state: State, vision: boolean = false) => {
     "openai-intent": "conversation-panel",
     "x-github-api-version": API_VERSION,
     "x-request-id": randomUUID(),
+    "Connection": "Keep-Alive",
+    "Keep-Alive": "timeout=0, max=0",
     "x-vscode-user-agent-library-version": "electron-fetch",
   }
 
@@ -45,6 +47,8 @@ export const githubHeaders = (state: State) => ({
   "user-agent": USER_AGENT,
   "x-github-api-version": API_VERSION,
   "x-vscode-user-agent-library-version": "electron-fetch",
+  "Connection": "Keep-Alive",
+  "Keep-Alive": "timeout=0, max=0",
 })
 
 export const GITHUB_BASE_URL = "https://github.com"
