@@ -3,6 +3,8 @@
 ⚠️ **EDUCATIONAL PURPOSE ONLY** ⚠️
 This project is a reverse-engineered implementation of the GitHub Copilot API created for educational purposes only. It is not officially supported by GitHub and should not be used in production environments.
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/E1E519XS7W)
+
 ## Project Overview
 
 A wrapper around GitHub Copilot API to make it OpenAI compatible, making it usable for other tools like AI assistants, local interfaces, and development utilities.
@@ -56,14 +58,14 @@ npx copilot-api --port 8080
 
 The following command line options are available:
 
-| Option       | Description                                   | Default | Alias |
-| ------------ | --------------------------------------------- | ------- | ----- |
-| --port       | Port to listen on                             | 4141    | -p    |
-| --verbose    | Enable verbose logging                        | false   | -v    |
-| --business   | Use a business plan GitHub account            | false   | none  |
-| --manual     | Enable manual request approval                | false   | none  |
-| --rate-limit | Rate limit in seconds between requests        | none    | -r    |
-| --wait       | Wait instead of error when rate limit is hit  | false   | -w    |
+| Option       | Description                                  | Default | Alias |
+| ------------ | -------------------------------------------- | ------- | ----- |
+| --port       | Port to listen on                            | 4141    | -p    |
+| --verbose    | Enable verbose logging                       | false   | -v    |
+| --business   | Use a business plan GitHub account           | false   | none  |
+| --manual     | Enable manual request approval               | false   | none  |
+| --rate-limit | Rate limit in seconds between requests       | none    | -r    |
+| --wait       | Wait instead of error when rate limit is hit | false   | -w    |
 
 Example usage:
 
@@ -123,6 +125,6 @@ This helps you control usage and monitor requests in real-time.
 
 - [ ] Manual authentication flow
 - [x] Manual request approval system
-- [ ] Rate limiting implementation
+- [x] Rate limiting implementation
 - [x] Token counting
 - [x] Enhanced error handling and recovery
