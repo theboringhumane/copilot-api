@@ -4,6 +4,7 @@ import { defineCommand, runMain } from "citty"
 import consola from "consola"
 import { serve, type ServerHandler } from "srvx"
 
+import { auth } from "./auth"
 import { cacheModels } from "./lib/models"
 import { ensurePaths } from "./lib/paths"
 import { state } from "./lib/state"
@@ -18,6 +19,7 @@ interface RunServerOptions {
   manual: boolean
   rateLimit: number | undefined
   rateLimitWait: boolean
+  githubToken?: string
 }
 
 export async function runServer(options: RunServerOptions): Promise<void> {
@@ -37,7 +39,14 @@ export async function runServer(options: RunServerOptions): Promise<void> {
 
   await ensurePaths()
   await cacheVSCodeVersion()
-  await setupGitHubToken()
+
+  if (options.githubToken) {
+    state.githubToken = options.githubToken
+    consola.info("Using provided GitHub token")
+  } else {
+    await setupGitHubToken()
+  }
+
   await setupCopilotToken()
   await cacheModels()
 
@@ -50,7 +59,11 @@ export async function runServer(options: RunServerOptions): Promise<void> {
   })
 }
 
-const main = defineCommand({
+const start = defineCommand({
+  meta: {
+    name: "start",
+    description: "Start the Copilot API server",
+  },
   args: {
     port: {
       alias: "p",
@@ -86,6 +99,12 @@ const main = defineCommand({
       description:
         "Wait instead of error when rate limit is hit. Has no effect if rate limit is not set",
     },
+    "github-token": {
+      alias: "g",
+      type: "string",
+      description:
+        "Provide GitHub token directly instead of using stored token",
+    },
   },
   run({ args }) {
     const rateLimitRaw = args["rate-limit"]
@@ -102,8 +121,18 @@ const main = defineCommand({
       manual: args.manual,
       rateLimit,
       rateLimitWait: Boolean(args.wait),
+      githubToken: args["github-token"],
     })
   },
+})
+
+const main = defineCommand({
+  meta: {
+    name: "copilot-api",
+    description:
+      "A wrapper around GitHub Copilot API to make it OpenAI compatible, making it usable for other tools.",
+  },
+  subCommands: { auth, start },
 })
 
 await runMain(main)

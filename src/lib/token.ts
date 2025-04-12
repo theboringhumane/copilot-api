@@ -35,11 +35,17 @@ export const setupCopilotToken = async () => {
   }, refreshInterval)
 }
 
-export async function setupGitHubToken(): Promise<void> {
+interface SetupGitHubTokenOptions {
+  force?: boolean
+}
+
+export async function setupGitHubToken(
+  options?: SetupGitHubTokenOptions,
+): Promise<void> {
   try {
     const githubToken = await readGithubToken()
 
-    if (githubToken) {
+    if (githubToken && !options?.force) {
       state.githubToken = githubToken
       await logUser()
 

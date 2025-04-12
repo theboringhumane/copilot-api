@@ -45,46 +45,84 @@ docker run -p 4141:4141 copilot-api
 You can run the project directly using npx:
 
 ```sh
-npx copilot-api@latest
+npx copilot-api@latest start
 ```
 
 With options:
 
 ```sh
-npx copilot-api --port 8080
+npx copilot-api@latest start --port 8080
 ```
+
+For authentication only:
+
+```sh
+npx copilot-api@latest auth
+```
+
+## Command Structure
+
+Copilot API now uses a subcommand structure with two main commands:
+
+- `start`: Start the Copilot API server (default command)
+- `auth`: Run GitHub authentication flow without starting the server
 
 ## Command Line Options
 
-The following command line options are available:
+### Start Command Options
 
-| Option       | Description                                  | Default | Alias |
-| ------------ | -------------------------------------------- | ------- | ----- |
-| --port       | Port to listen on                            | 4141    | -p    |
-| --verbose    | Enable verbose logging                       | false   | -v    |
-| --business   | Use a business plan GitHub account           | false   | none  |
-| --manual     | Enable manual request approval               | false   | none  |
-| --rate-limit | Rate limit in seconds between requests       | none    | -r    |
-| --wait       | Wait instead of error when rate limit is hit | false   | -w    |
+The following command line options are available for the `start` command:
 
-Example usage:
+| Option         | Description                                  | Default | Alias |
+| -------------- | -------------------------------------------- | ------- | ----- |
+| --port         | Port to listen on                            | 4141    | -p    |
+| --verbose      | Enable verbose logging                       | false   | -v    |
+| --business     | Use a business plan GitHub account           | false   | none  |
+| --manual       | Enable manual request approval               | false   | none  |
+| --rate-limit   | Rate limit in seconds between requests       | none    | -r    |
+| --wait         | Wait instead of error when rate limit is hit | false   | -w    |
+| --github-token | Provide GitHub token directly                | none    | -g    |
+
+### Auth Command Options
+
+| Option    | Description            | Default | Alias |
+| --------- | ---------------------- | ------- | ----- |
+| --verbose | Enable verbose logging | false   | -v    |
+
+## Example Usage
+
+Using with npx:
 
 ```sh
+# Basic usage with start command
+npx copilot-api@latest start
+
 # Run on custom port with verbose logging
-npx copilot-api@latest --port 8080 --verbose
+npx copilot-api@latest start --port 8080 --verbose
 
 # Use with a Business GitHub account
-npx copilot-api@latest --business
+npx copilot-api@latest start --business
 
 # Enable manual approval for each request
-npx copilot-api@latest --manual
+npx copilot-api@latest start --manual
 
 # Set rate limit to 30 seconds between requests
-npx copilot-api@latest --rate-limit 30
+npx copilot-api@latest start --rate-limit 30
 
 # Wait instead of error when rate limit is hit
-npx copilot-api@latest --rate-limit 30 --wait
+npx copilot-api@latest start --rate-limit 30 --wait
+
+# Provide GitHub token directly
+npx copilot-api@latest start --github-token ghp_YOUR_TOKEN_HERE
+
+# Run only the auth flow
+npx copilot-api@latest auth
+
+# Run auth flow with verbose logging
+npx copilot-api@latest auth --verbose
 ```
+
+> **Note**: For backward compatibility, if no subcommand is provided, the `start` command will be used as default.
 
 ## Running from Source
 
@@ -123,7 +161,7 @@ This helps you control usage and monitor requests in real-time.
 
 ## Roadmap
 
-- [ ] Manual authentication flow
+- [x] Manual authentication flow
 - [x] Manual request approval system
 - [x] Rate limiting implementation
 - [x] Token counting
