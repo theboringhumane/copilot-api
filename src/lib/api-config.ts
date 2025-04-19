@@ -52,11 +52,5 @@ export const githubHeaders = (state: State) => ({
 })
 
 export const GITHUB_BASE_URL = "https://github.com"
-export const GITHUB_CLIENT_ID = "01ab8ac9400c4e429b23"
-export const GITHUB_APP_SCOPES = [
-  "read:org",
-  "read:user",
-  "repo",
-  "user:email",
-  "workflow",
-].join(" ")
+export const GITHUB_CLIENT_ID = "Iv1.b507a08c87ecfe98"
+export const GITHUB_APP_SCOPES = ["read:user"].join(" ")
