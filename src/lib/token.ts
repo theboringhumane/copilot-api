@@ -1,4 +1,5 @@
 import consola from "consola"
+import dotenv from "dotenv"
 import fs from "node:fs/promises"
 
 import { PATHS } from "~/lib/paths"
@@ -6,13 +7,14 @@ import { getCopilotToken } from "~/services/github/get-copilot-token"
 import { getDeviceCode } from "~/services/github/get-device-code"
 import { getGitHubUser } from "~/services/github/get-user"
 import { pollAccessToken } from "~/services/github/poll-access-token"
+
 import { HTTPError } from "./http-error"
 import { state } from "./state"
-import dotenv from 'dotenv'
 
 dotenv.config()
 
-const readGithubToken = () => process.env.GH_TOKEN ?? fs.readFile(PATHS.GITHUB_TOKEN_PATH, "utf8")
+const readGithubToken = () =>
+  process.env.GH_TOKEN ?? fs.readFile(PATHS.GITHUB_TOKEN_PATH, "utf8")
 
 const writeGithubToken = (token: string) =>
   fs.writeFile(PATHS.GITHUB_TOKEN_PATH, token)
@@ -21,7 +23,7 @@ export const setupCopilotToken = async () => {
   const { token, refresh_in } = await getCopilotToken()
   state.copilotToken = token
 
-  const refreshInterval = (refresh_in - 60) * 1000
+  const refreshInterval = (refresh_in - 60) * 1000 // 60 seconds before refresh
 
   setInterval(async () => {
     consola.start("Refreshing Copilot token")

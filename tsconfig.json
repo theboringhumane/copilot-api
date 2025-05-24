@@ -7,7 +7,6 @@
 
     "moduleResolution": "Bundler",
     "moduleDetection": "force",
-    "erasableSyntaxOnly": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
 

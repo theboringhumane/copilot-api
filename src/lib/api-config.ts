@@ -15,6 +15,7 @@ const API_VERSION = "2025-04-01"
 
 export const copilotBaseUrl = (state: State) =>
   `https://api.${state.accountType}.githubcopilot.com`
+
 export const copilotHeaders = (state: State) => {
   const headers: Record<string, string> = {
     Authorization: `Bearer ${state.copilotToken}`,
@@ -26,8 +27,7 @@ export const copilotHeaders = (state: State) => {
     "openai-intent": "conversation-panel",
     "x-github-api-version": API_VERSION,
     "x-request-id": randomUUID(),
-    "Connection": "Keep-Alive",
-    "Keep-Alive": "timeout=0, max=0",
+    Connection: "Keep-Alive",
     "x-vscode-user-agent-library-version": "electron-fetch",
   }
 
@@ -48,7 +48,7 @@ export const githubHeaders = (state: State) => ({
   "user-agent": USER_AGENT,
   "x-github-api-version": API_VERSION,
   "x-vscode-user-agent-library-version": "electron-fetch",
-  "Connection": "Keep-Alive",
+  Connection: "Keep-Alive",
   "Keep-Alive": "timeout=0, max=0",
 })
 
