@@ -19,5 +19,6 @@ EXPOSE 4141
 
 ARG GH_TOKEN
 ENV GH_TOKEN=$GH_TOKEN
+ENV ENABLE_BUSINESS_TOKEN=false
 
-CMD bun run dist/main.js start -g $GH_TOKEN
+CMD if [ -n "$ENABLE_BUSINESS_TOKEN" ]; then bun run dist/main.js start -g $GH_TOKEN --business; else bun run dist/main.js start -g $GH_TOKEN; fi
