@@ -1,5 +1,6 @@
 import type { Context } from "hono"
 
+import consola from "consola"
 import { streamSSE, type SSEMessage } from "hono/streaming"
 
 import { awaitApproval } from "~/lib/approval"
